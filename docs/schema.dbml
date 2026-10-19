@@ -1,0 +1,72 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table profiles {
+  id uuid [pk]
+  name text [not null]
+  description text [not null]
+  headline varchar(100)
+}
+
+Table skills {
+  id uuid [pk]
+  name text [not null]
+  sortOrder int [not null]
+  profileId uuid [ref: > profiles.id, not null]
+  indexes {
+    (profileId, name) [unique]
+  }
+}
+Table links {
+    id uuid [pk]
+    name text [not null]
+    url text [not null]
+    sortOrder int [not null]
+    profileId uuid [ref: > profiles.id, not null] 
+    indexes {
+      profileId
+    }
+}
+
+Table experiences {
+  id uuid [pk]
+  company text [not null]
+  location text
+  description text
+  position text [not null]
+  startDate date [not null]
+  endDate date
+  profileId uuid [ref: > profiles.id, not null]
+      indexes {
+      profileId
+    }
+
+}
+Table achievements {
+  id uuid [pk]
+  text text [not null]
+  sortOrder int [not null]
+  experienceId uuid [ref: > experiences.id, not null]
+  indexes {
+    experienceId
+  }
+}
+
+Table projects {
+  id uuid [pk]
+  name text [not null]
+  description text
+  url text [not null]
+  sortOrder int [not null]
+  profileId uuid [ref: > profiles.id, not null]
+  indexes {
+    profileId
+  }
+}
+Table project_skills {
+  projectId uuid [ref: > projects.id, not null]
+  skillId uuid [ref: > skills.id, not null]
+  indexes {
+    (projectId, skillId ) [pk]
+  }
+}
