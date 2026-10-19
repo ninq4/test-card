@@ -20,7 +20,7 @@ Table skills {
 Table links {
     id uuid [pk]
     name text [not null]
-    url text [not null]
+    url text
     sortOrder int [not null]
     profileId uuid [ref: > profiles.id, not null] 
     indexes {

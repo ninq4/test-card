@@ -70,7 +70,7 @@ model Project {
   id            String         @id @default(uuid()) @db.Uuid
   name          String
   description   String?
-  url           String
+  url           String?
   sortOrder     Int
   profile       Profile        @relation(fields: [profileId], references: [id], onDelete: Cascade)
   profileId     String         @db.Uuid
