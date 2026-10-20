@@ -9,7 +9,7 @@ Backend-приложение, которое отдаёт через GraphQL и�
 
 | Задача | Технология |
 |---|---|
-| Язык и рантайм | TypeScript 6, Node.js 22+ |
+| Язык и рантайм | TypeScript 6, Node.js 24 (в Docker), 22.22+ локально |
 | Фреймворк | NestJS 12 |
 | API | GraphQL (code-first), Apollo Server 5, Apollo Sandbox |
 | База данных | PostgreSQL 17 |
@@ -19,13 +19,38 @@ Backend-приложение, которое отдаёт через GraphQL и�
 
 ## Быстрый старт
 
-Требования: Node.js 22.22+ (или 24+), npm, Docker с Docker Compose.
+Нужен только Docker с Docker Compose:
+
+```bash
+git clone https://github.com/ninq4/test-card.git
+cd test-card
+docker compose up --build
+```
+
+Compose поднимает PostgreSQL и, когда тот прошёл healthcheck, запускает приложение. При каждом старте контейнер приложения:
+
+1. применяет миграции (`prisma migrate deploy`);
+2. заполняет БД данными визитки (`prisma db seed`; seed идемпотентен, поэтому перезапуск не создаёт дублей);
+3. запускает сервер.
+
+Apollo Sandbox будет доступен по адресу http://localhost:3000/graphql.
+
+Чтобы начать полностью с нуля, удалив и данные БД:
+
+```bash
+docker compose down -v
+docker compose up --build
+```
+
+### Локальная разработка
+
+Требования: Node.js 22.22+ (или 24+) и npm. PostgreSQL берётся из того же compose.
 
 ```bash
 npm ci
 cp .env.example .env
 
-docker compose up -d          # PostgreSQL
+docker compose up -d postgres
 npx prisma generate           # клиент Prisma в src/generated/prisma
 npx prisma migrate deploy     # схема БД
 npx prisma db seed            # данные визитки
@@ -33,7 +58,7 @@ npx prisma db seed            # данные визитки
 npm run start:dev
 ```
 
-Apollo Sandbox откроется по адресу `http://localhost:3001/graphql` (порт задаётся переменной `PORT`).
+Порт задаётся переменной `PORT` в `.env` (в примере 3001). Локальный сервер и контейнер `app` работают с одной и той же БД из compose.
 
 ## Примеры запросов
 
@@ -195,6 +220,9 @@ Loader-ы создаются заново на каждый запрос в фу
 - **Скаляр `Date`** вместо `DateTime`: в БД колонки типа `DATE`, время и часовой пояс для периода работы не имеют смысла.
 - **Apollo Sandbox в любом окружении**, с `introspection: true` и плагином `LandingPageLocalDefault`. По умолчанию Apollo отключает их в production, а визитка должна открываться на публичном адресе. Стектрейсы при этом в ответы не попадают.
 - **Проверка соединения с БД при старте** (`SELECT 1`). С driver adapter `$connect()` ленивый, а приложение должно падать сразу, если БД недоступна или `DATABASE_URL` неверный.
+- **Миграции и seed при старте контейнера**, а не при сборке образа: на этапе сборки БД ещё нет, а `depends_on: service_healthy` гарантирует, что к моменту запуска Postgres готов принимать подключения. Если миграция падает, приложение не стартует.
+- **Одностадийный образ с dev-зависимостями.** Seed написан на TypeScript и запускается через `ts-node`, а CLI Prisma нужен для `migrate deploy`. Многостадийная сборка дала бы тот же `node_modules`, поэтому это осознанный компромисс в пользу простоты. Если важен размер образа, следующий шаг — компилировать seed в JS отдельным `tsconfig` и ставить в образ только production-зависимости.
+- **Корректная остановка контейнера.** Процесс запускается через `exec node`, чтобы Node был PID 1 и сам получал `SIGTERM`, а `app.enableShutdownHooks()` закрывает соединение с БД. Контейнер останавливается сразу, без десятисекундного таймаута Docker.
 
 ## Переменные окружения
 
