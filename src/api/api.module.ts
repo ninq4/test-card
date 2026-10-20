@@ -13,6 +13,7 @@ import { ProjectResolver } from './graphql/project/project.resolver';
 import { LoadersFactory } from './graphql/loaders/loaders.factory';
 import { LoadersModule } from './graphql/loaders/loaders.module';
 import { Request } from 'express';
+import { HealthcheckApiModule } from './healthcheck/healthcheck.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { Request } from 'express';
     SkillModule,
     ExperienceModule,
     ProjectModule,
+    HealthcheckApiModule,
   ],
   providers: [ProfileResolver, ExperienceResolver, ProjectResolver, DateScalar],
 })
