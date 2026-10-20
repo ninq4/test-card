@@ -3,6 +3,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ProfileModule } from '../modules/profile/profile.module';
 import { ProfileResolver } from './graphql/profile/profile.resolver';
+import { LinkModule } from '../modules/link/link.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ProfileResolver } from './graphql/profile/profile.resolver';
       },
     }),
     ProfileModule,
+    LinkModule,
   ],
   providers: [ProfileResolver],
 })
