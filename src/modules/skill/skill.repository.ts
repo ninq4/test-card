@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../infrastructure/database/prisma.service';
-import { Skill } from '../../generated/prisma/client';
+import { Prisma, Skill } from '../../generated/prisma/client';
+export type ProjectSkillWithSkill = Prisma.ProjectSkillGetPayload<{
+  include: { skill: true };
+}>;
 
 @Injectable()
 export class SkillRepository {
@@ -11,6 +14,19 @@ export class SkillRepository {
         profileId: { in: [...ids] },
       },
       orderBy: { sortOrder: 'asc' },
+    });
+  }
+  findProjectSkillsByProjectIds(
+    ids: readonly string[],
+  ): Promise<ProjectSkillWithSkill[]> {
+    return this.prisma.projectSkill.findMany({
+      where: {
+        projectId: { in: [...ids] },
+      },
+      include: {
+        skill: true,
+      },
+      orderBy: { skill: { sortOrder: 'asc' } },
     });
   }
 }

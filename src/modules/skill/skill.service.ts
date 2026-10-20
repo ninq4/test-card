@@ -10,4 +10,9 @@ export class SkillService {
 
     return skills;
   }
+  async getProjectSkillsByProjectIds(ids: readonly string[]): Promise<Skill[]> {
+    const projectSkills =
+      this.skillRepository.findProjectSkillsByProjectIds(ids);
+    return (await projectSkills).map((ps) => ps.skill);
+  }
 }

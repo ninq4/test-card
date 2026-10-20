@@ -9,6 +9,7 @@ import { DateScalar } from './graphql/scalars/date.scalar';
 import { ExperienceResolver } from './graphql/experience/experience.resolver';
 import { ExperienceModule } from '../modules/experience/experience.module';
 import { ProjectModule } from '../modules/project/project.module';
+import { ProjectResolver } from './graphql/project/project.resolver';
 
 @Module({
   imports: [
@@ -34,6 +35,6 @@ import { ProjectModule } from '../modules/project/project.module';
     ExperienceModule,
     ProjectModule,
   ],
-  providers: [ProfileResolver, ExperienceResolver, DateScalar],
+  providers: [ProfileResolver, ExperienceResolver, ProjectResolver, DateScalar],
 })
 export class ApiModule {}
