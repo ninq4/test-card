@@ -10,12 +10,17 @@ import { ExperienceResolver } from './graphql/experience/experience.resolver';
 import { ExperienceModule } from '../modules/experience/experience.module';
 import { ProjectModule } from '../modules/project/project.module';
 import { ProjectResolver } from './graphql/project/project.resolver';
+import { LoadersFactory } from './graphql/loaders/loaders.factory';
+import { LoadersModule } from './graphql/loaders/loaders.module';
+import { Request } from 'express';
 
 @Module({
   imports: [
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
-      useFactory: async () => {
+      imports: [LoadersModule],
+      inject: [LoadersFactory],
+      useFactory: async (loadersFactory: LoadersFactory) => {
         const { ApolloServerPluginLandingPageLocalDefault } =
           await import('@apollo/server/plugin/landingPage/default');
 
@@ -26,6 +31,10 @@ import { ProjectResolver } from './graphql/project/project.resolver';
           introspection: true,
           plugins: [ApolloServerPluginLandingPageLocalDefault()],
           includeStacktraceInErrorResponses: false,
+          context: ({ req }: { req: Request }) => ({
+            req,
+            loaders: loadersFactory.create(),
+          }),
         };
       },
     }),

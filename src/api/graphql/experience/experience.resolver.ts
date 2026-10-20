@@ -1,20 +1,19 @@
-import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
+import { Context, Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { ExperienceModel } from './experience.model';
-import { ExperienceService } from '../../../modules/experience/experience.service';
 import { AchievementModel } from './achievement.model';
 import { toAchievementModel } from './experience.mapper';
+import type { Loaders } from '../loaders/loaders.factory';
 
 @Resolver(() => ExperienceModel)
 export class ExperienceResolver {
-  constructor(private readonly experienceService: ExperienceService) {}
   @ResolveField(() => [AchievementModel])
   async achievements(
     @Parent() experience: ExperienceModel,
+    @Context('loaders') loaders: Loaders,
   ): Promise<AchievementModel[]> {
-    const achievements =
-      await this.experienceService.getAchievementsByExperienceIds([
-        experience.id,
-      ]);
+    const achievements = await loaders.achievementsByExperienceId.load(
+      experience.id,
+    );
     return achievements.map(toAchievementModel);
   }
 }
