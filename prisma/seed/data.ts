@@ -126,12 +126,14 @@ export const seedData = {
       description:
         'API для работы со статьями. CQRS-архитектура, интеграция с Kafka.',
       skills: ['NestJS', 'Kafka', 'CQRS', 'Prisma'],
+      url: 'https://uznay.ru/',
     },
     {
       name: 'RPGreal',
       description:
         'Мобильное приложение для iOS и Android с подпиской, push-уведомлениями, виджетами и OTA-обновлениями.',
       skills: ['TypeScript', 'React Native', 'Expo', 'Zustand', 'Reanimated'],
+      url: 'https://rpgreal.org/',
     },
     {
       name: 'Мультиплатформенное приложение для ресторанов',
@@ -144,12 +146,14 @@ export const seedData = {
       description:
         'SSR/SSG-сайт с упором на SEO и производительность. Оптимизация загрузки и клиентского взаимодействия.',
       skills: ['Next.js', 'React Query', 'MobX'],
+      url: 'https://ybru.menu/',
     },
     {
       name: 'Backoffice для сайта и мобильного приложения',
       description:
         'Управление темами оформления для мобильного и веб-приложения. Создание веб-, мобильных, Telegram- и VK-приложений из единого интерфейса. Управление витринами, категориями и товарами.',
       skills: ['React', 'MobX', 'React Query'],
+      url: 'https://ybru.menu/',
     },
     {
       name: 'CRM для государственной корпорации',
@@ -168,12 +172,14 @@ export const seedData = {
       description:
         'Мобильное приложение с QR-доступом к меню и встроенными чатами. WebSocket-коммуникация между гостями и персоналом, стабильная работа real-time функциональности при нестабильном соединении.',
       skills: ['React Native', 'Expo', 'Reanimated', 'React Query', 'MobX'],
+      url: 'https://stable.omgapp.ru/',
     },
     {
       name: 'CMS и редактор статей',
       description:
         'Система управления контентом для информационного портала с удобным интерфейсом для редакторов.',
       skills: ['Nuxt.js', 'Vue 3', 'Pinia'],
+      url: 'https://uznay.ru/admin',
     },
   ],
 } satisfies SeedData;
