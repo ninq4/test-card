@@ -6,6 +6,5 @@ export function toLinkModel(link: Link): LinkModel {
     id: link.id,
     name: link.name,
     url: link.url,
-    sortOrder: link.sortOrder,
   };
 }
