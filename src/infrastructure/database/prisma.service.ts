@@ -13,7 +13,7 @@ export class PrismaService
     const connectionString = configService.get('DATABASE_URL', { infer: true });
     const adapter = new PrismaPg(connectionString);
 
-    super({ adapter });
+    super({ adapter, log: ['query'] });
   }
 
   async onModuleInit(): Promise<void> {
