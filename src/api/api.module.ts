@@ -4,6 +4,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ProfileModule } from '../modules/profile/profile.module';
 import { ProfileResolver } from './graphql/profile/profile.resolver';
 import { LinkModule } from '../modules/link/link.module';
+import { SkillModule } from '../modules/skill/skill.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { LinkModule } from '../modules/link/link.module';
     }),
     ProfileModule,
     LinkModule,
+    SkillModule,
   ],
   providers: [ProfileResolver],
 })
