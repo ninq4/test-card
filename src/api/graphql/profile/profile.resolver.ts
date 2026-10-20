@@ -9,6 +9,9 @@ import { toLinkModel } from '../link/link.mapper';
 import { SkillModel } from '../skill/skill.model';
 import { SkillService } from '../../../modules/skill/skill.service';
 import { toSkillModel } from '../skill/skill.mapper';
+import { ExperienceModel } from '../experience/experience.model';
+import { ExperienceService } from '../../../modules/experience/experience.service';
+import { toExperienceModel } from '../experience/experience.mapper';
 
 @Resolver(() => ProfileModel)
 export class ProfileResolver {
@@ -16,6 +19,7 @@ export class ProfileResolver {
     private readonly profileService: ProfileService,
     private readonly linkService: LinkService,
     private readonly skillService: SkillService,
+    private readonly experienceService: ExperienceService,
   ) {}
   @Query(() => ProfileModel, { description: 'Получение профиля' })
   async profile(): Promise<ProfileModel> {
@@ -33,5 +37,14 @@ export class ProfileResolver {
   async skills(@Parent() profile: ProfileModel): Promise<SkillModel[]> {
     const skills = await this.skillService.getSkillsByProfileIds([profile.id]);
     return skills.map(toSkillModel);
+  }
+  @ResolveField(() => [ExperienceModel])
+  async experience(
+    @Parent() profile: ProfileModel,
+  ): Promise<ExperienceModel[]> {
+    const experience = await this.experienceService.getExperiencesByProfileIds([
+      profile.id,
+    ]);
+    return experience.map(toExperienceModel);
   }
 }

@@ -5,6 +5,9 @@ import { ProfileModule } from '../modules/profile/profile.module';
 import { ProfileResolver } from './graphql/profile/profile.resolver';
 import { LinkModule } from '../modules/link/link.module';
 import { SkillModule } from '../modules/skill/skill.module';
+import { DateScalar } from './graphql/scalars/date.scalar';
+import { ExperienceResolver } from './graphql/experience/experience.resolver';
+import { ExperienceModule } from '../modules/experience/experience.module';
 
 @Module({
   imports: [
@@ -27,7 +30,8 @@ import { SkillModule } from '../modules/skill/skill.module';
     ProfileModule,
     LinkModule,
     SkillModule,
+    ExperienceModule,
   ],
-  providers: [ProfileResolver],
+  providers: [ProfileResolver, ExperienceResolver, DateScalar],
 })
 export class ApiModule {}

@@ -2,6 +2,6 @@ import { ApplicationException } from '../../shared/exceptions/application.except
 
 export class ProfileNotFoundException extends ApplicationException {
   constructor() {
-    super('Profile not found', 404, 'PROFILE_NOT_FOUND');
+    super('Профиль не найден', 404, 'PROFILE_NOT_FOUND');
   }
 }
