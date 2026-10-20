@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: test-card
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: test-card-db
+          property: connectionString
+      - key: CHECKPOINT_DISABLE
+        value: '1'
+
+databases:
+  - name: test-card-db
+    plan: free
+    region: frankfurt
+    databaseName: test_card
+    user: test_card
+    postgresMajorVersion: '17'
+    ipAllowList: []
