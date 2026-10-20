@@ -1,0 +1,36 @@
+
+# Version control
+.git
+.gitignore
+
+# Dependencies and build output are created inside the image
+node_modules
+dist
+coverage
+*.tsbuildinfo
+src/generated
+docs
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+
+
+# Logs, caches and temporary files
+logs
+*.log
+.npm
+.yarn
+.cache
+.eslintcache
+.temp
+.tmp
+
+# Editors and operating-system metadata
+.idea
+.vscode
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.Zone.Identifier
