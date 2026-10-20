@@ -8,13 +8,13 @@ import { toAchievementModel } from './experience.mapper';
 export class ExperienceResolver {
   constructor(private readonly experienceService: ExperienceService) {}
   @ResolveField(() => [AchievementModel])
-  async achievement(
+  async achievements(
     @Parent() experience: ExperienceModel,
   ): Promise<AchievementModel[]> {
-    const achievement =
+    const achievements =
       await this.experienceService.getAchievementsByExperienceIds([
         experience.id,
       ]);
-    return achievement.map(toAchievementModel);
+    return achievements.map(toAchievementModel);
   }
 }

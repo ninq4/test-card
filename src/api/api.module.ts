@@ -8,6 +8,7 @@ import { SkillModule } from '../modules/skill/skill.module';
 import { DateScalar } from './graphql/scalars/date.scalar';
 import { ExperienceResolver } from './graphql/experience/experience.resolver';
 import { ExperienceModule } from '../modules/experience/experience.module';
+import { ProjectModule } from '../modules/project/project.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ExperienceModule } from '../modules/experience/experience.module';
     LinkModule,
     SkillModule,
     ExperienceModule,
+    ProjectModule,
   ],
   providers: [ProfileResolver, ExperienceResolver, DateScalar],
 })
