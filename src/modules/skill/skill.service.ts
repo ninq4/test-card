@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import type { Skill } from '../../generated/prisma/client';
-import { SkillRepository } from './skill.repository';
+import { ProjectSkillWithSkill, SkillRepository } from './skill.repository';
 
 @Injectable()
 export class SkillService {
@@ -10,9 +10,11 @@ export class SkillService {
 
     return skills;
   }
-  async getProjectSkillsByProjectIds(ids: readonly string[]): Promise<Skill[]> {
+  async getProjectSkillsByProjectIds(
+    ids: readonly string[],
+  ): Promise<ProjectSkillWithSkill[]> {
     const projectSkills =
       this.skillRepository.findProjectSkillsByProjectIds(ids);
-    return (await projectSkills).map((ps) => ps.skill);
+    return await projectSkills;
   }
 }

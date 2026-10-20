@@ -12,6 +12,6 @@ export class ProjectResolver {
     const skills = await this.skillService.getProjectSkillsByProjectIds([
       project.id,
     ]);
-    return skills.map(toSkillModel);
+    return skills.map((ps) => toSkillModel(ps.skill));
   }
 }
