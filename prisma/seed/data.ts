@@ -98,6 +98,7 @@ export const seedData = {
   projects: [
     {
       name: 'Цифровая визитка',
+      url: 'https://github.com/ninq4/test-card',
       description:
         'GraphQL API с профилем, опытом, навыками и проектами. Загрузка вложенных данных без N+1, автоматическая подготовка и заполнение БД при запуске.',
       skills: [

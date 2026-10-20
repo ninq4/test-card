@@ -1,72 +1,88 @@
-// Use DBML to define your database structure
+// Схема БД цифровой визитки. Источник истины — prisma/schema.prisma.
 // Docs: https://dbml.dbdiagram.io/docs
 
-Table profiles {
+Table Profile {
   id uuid [pk]
   name text [not null]
   description text [not null]
   headline varchar(100)
 }
 
-Table skills {
+Table Link {
+  id uuid [pk]
+  name text [not null]
+  url text [not null]
+  sortOrder int [not null]
+  profileId uuid [not null]
+
+  indexes {
+    profileId
+  }
+}
+
+Table Skill {
   id uuid [pk]
   name text [not null]
   sortOrder int [not null]
-  profileId uuid [ref: > profiles.id, not null]
+  profileId uuid [not null]
+
   indexes {
     (profileId, name) [unique]
   }
 }
-Table links {
-    id uuid [pk]
-    name text [not null]
-    url text
-    sortOrder int [not null]
-    profileId uuid [ref: > profiles.id, not null] 
-    indexes {
-      profileId
-    }
-}
 
-Table experiences {
+Table Experience {
   id uuid [pk]
   company text [not null]
+  position text [not null]
   location text
   description text
-  position text [not null]
   startDate date [not null]
-  endDate date
-  profileId uuid [ref: > profiles.id, not null]
-      indexes {
-      profileId
-    }
+  endDate date [note: 'null — по настоящее время']
+  profileId uuid [not null]
 
+  indexes {
+    profileId
+  }
 }
-Table achievements {
+
+Table Achievement {
   id uuid [pk]
   text text [not null]
   sortOrder int [not null]
-  experienceId uuid [ref: > experiences.id, not null]
+  experienceId uuid [not null]
+
   indexes {
     experienceId
   }
 }
 
-Table projects {
+Table Project {
   id uuid [pk]
   name text [not null]
   description text
-  url text [not null]
+  url text
   sortOrder int [not null]
-  profileId uuid [ref: > profiles.id, not null]
+  profileId uuid [not null]
+
   indexes {
     profileId
   }
 }
-Table project_skills {
-  projectId uuid [ref: > projects.id, not null]
-  skillId uuid [ref: > skills.id, not null]
+
+Table ProjectSkill {
+  projectId uuid [not null]
+  skillId uuid [not null]
+
   indexes {
-    (projectId, skillId ) [pk]
+    (projectId, skillId) [pk]
   }
 }
+
+Ref: Link.profileId > Profile.id [delete: cascade]
+Ref: Skill.profileId > Profile.id [delete: cascade]
+Ref: Experience.profileId > Profile.id [delete: cascade]
+Ref: Project.profileId > Profile.id [delete: cascade]
+Ref: Achievement.experienceId > Experience.id [delete: cascade]
+Ref: ProjectSkill.projectId > Project.id [delete: cascade]
+Ref: ProjectSkill.skillId > Skill.id [delete: cascade]
